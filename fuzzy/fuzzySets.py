@@ -5,7 +5,7 @@ class Inputs:
         self.CV = self.CV(cv)
         self.PA = self.PA(pa)
         self.PV = self.PV(pv)
-        
+
     class CP:
         def __init__(self, value):
             self.value = value

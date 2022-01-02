@@ -2,7 +2,7 @@
 
 # python imports
 from math import degrees
-from fuzzy.fuzzySets import CP, CV, PA, PV
+from fuzzy.fuzzySets import Inputs
 
 # pyfuzzy imports
 from fuzzy.storage.fcl.Reader import Reader
@@ -29,14 +29,11 @@ class FuzzyController:
         )
 
     def fuzzification(self, input):
-        cp = CP(input['cp'])
-        cv = CV(input['cv'])
-        pa = PA(input['pa'])
-        pv = PV(input['pv'])
-        print('==============' + str(cp.cp_left_near()))
-        print('==============' + str(pv.pv_stop()))
-        print('==============' + str(cv.cv_left_slow()))
-        print('==============' + str(pa.pa_up()))
+        fuzzy_input = Inputs(input['cp'], input['cv'], input['pa'], input['pv'])
+        print('==============' + str(fuzzy_input.CP.cp_left_near()))
+        print('==============' + str(fuzzy_input.PV.pv_stop()))
+        print('==============' + str(fuzzy_input.CV.cv_left_slow()))
+        print('==============' + str(fuzzy_input.PA.pa_up()))
 
     def decide(self, world):
         output = self._make_output()
