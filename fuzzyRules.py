@@ -50,7 +50,7 @@ class fuzzy_rules:
         right_slow3 = min(inputs.PA.pa_up_right, inputs.PV.pv_ccw_slow)
         right_slow4 = min(inputs.PA.pa_up, inputs.PV.pv_cw_slow)
         # new rules with cv = right_fast
-        right_slow5 = min(inputs.PA.pa_up_more_right, inputs.PV.pv_ccw_slow, inputs.CV.cv_right_fast)
+        '''right_slow5 = min(inputs.PA.pa_up_more_right, inputs.PV.pv_ccw_slow, inputs.CV.cv_right_fast)
         right_slow6 = min(inputs.PA.pa_up_more_right, inputs.PV.pv_cw_slow, inputs.CV.cv_right_fast)
         right_slow7 = min(inputs.PA.pa_up_more_right, inputs.PV.pv_cw_fast, inputs.CV.cv_right_fast)
         right_slow8 = min(inputs.PA.pa_down_more_right, inputs.PV.pv_ccw_slow, inputs.CV.cv_right_fast)
@@ -61,12 +61,24 @@ class fuzzy_rules:
         right_slow13 = min(inputs.PA.pa_up_right, inputs.PV.pv_cw_fast, inputs.CV.cv_right_fast)
         right_slow14 = min(inputs.PA.pa_up_left, inputs.PV.pv_cw_fast, inputs.CV.cv_right_fast)
         right_slow15 = min(inputs.PA.pa_down, inputs.PV.pv_stop, inputs.CV.cv_right_fast)
-        right_slow16 = min(inputs.PA.pa_up, inputs.PV.pv_cw_fast, inputs.CV.cv_right_fast)
+        right_slow16 = min(inputs.PA.pa_up, inputs.PV.pv_cw_fast, inputs.CV.cv_right_fast)'''
         return max(right_slow1, right_slow2, right_slow3, right_slow4)
 
     def right_fast_rules(self) :
         inputs = self.inputs
-        right_fast1 = min(inputs.PA.pa_up_more_right, inputs.PV.pv_ccw_slow, 1 - inputs.CV.cv_right_fast)
+        right_fast1 = min(inputs.PA.pa_up_more_right, inputs.PV.pv_ccw_slow)
+        right_fast2 = min(inputs.PA.pa_up_more_right, inputs.PV.pv_cw_slow)
+        right_fast3 = min(inputs.PA.pa_up_more_right, inputs.PV.pv_cw_fast)
+        right_fast4 = min(inputs.PA.pa_down_more_right, inputs.PV.pv_ccw_slow)
+        right_fast5 = min(inputs.PA.pa_down_right, inputs.PV.pv_ccw_slow)
+        right_fast6 = min(inputs.PA.pa_down_right, inputs.PV.pv_cw_slow)
+        right_fast7 = min(inputs.PA.pa_up_right, inputs.PV.pv_cw_slow)
+        right_fast8 = min(inputs.PA.pa_up_right, inputs.PV.pv_stop)
+        right_fast9 = min(inputs.PA.pa_up_right, inputs.PV.pv_cw_fast)
+        right_fast10 = min(inputs.PA.pa_up_left, inputs.PV.pv_cw_fast)
+        right_fast11 = min(inputs.PA.pa_down, inputs.PV.pv_stop)
+        right_fast12 = min(inputs.PA.pa_up, inputs.PV.pv_cw_fast)
+        '''right_fast1 = min(inputs.PA.pa_up_more_right, inputs.PV.pv_ccw_slow, 1 - inputs.CV.cv_right_fast)
         right_fast2 = min(inputs.PA.pa_up_more_right, inputs.PV.pv_cw_slow, 1 - inputs.CV.cv_right_fast)
         right_fast3 = min(inputs.PA.pa_up_more_right, inputs.PV.pv_cw_fast, 1 - inputs.CV.cv_right_fast)
         right_fast4 = min(inputs.PA.pa_down_more_right, inputs.PV.pv_ccw_slow, 1 - inputs.CV.cv_right_fast)
@@ -77,5 +89,5 @@ class fuzzy_rules:
         right_fast9 = min(inputs.PA.pa_up_right, inputs.PV.pv_cw_fast, 1 - inputs.CV.cv_right_fast)
         right_fast10 = min(inputs.PA.pa_up_left, inputs.PV.pv_cw_fast, 1 - inputs.CV.cv_right_fast)
         right_fast11 = min(inputs.PA.pa_down, inputs.PV.pv_stop, 1 - inputs.CV.cv_right_fast)
-        right_fast12 = min(inputs.PA.pa_up, inputs.PV.pv_cw_fast, 1 - inputs.CV.cv_right_fast)
+        right_fast12 = min(inputs.PA.pa_up, inputs.PV.pv_cw_fast, 1 - inputs.CV.cv_right_fast)'''
         return max(right_fast1, right_fast2, right_fast3, right_fast4, right_fast5, right_fast6, right_fast7, right_fast8, right_fast9, right_fast10, right_fast11, right_fast12)
