@@ -2,7 +2,7 @@
 
 # python imports
 from math import degrees
-from fuzzySets import Inputs
+import Fuzzy
 
 # pyfuzzy imports
 from fuzzy.storage.fcl.Reader import Reader
@@ -28,21 +28,17 @@ class FuzzyController:
             force = 0.
         )
 
-    def fuzzification(self, input):
-        fuzzy_input = Inputs(input['cp'], input['cv'], input['pa'], input['pv'])
-        print('==============' + str(fuzzy_input.CP.cp_left_near()))
-        print('==============' + str(fuzzy_input.PV.pv_stop()))
-        print('==============' + str(fuzzy_input.CV.cv_left_slow()))
-        print('==============' + str(fuzzy_input.PA.pa_up()))
 
     def decide(self, world):
         output = self._make_output()
-        self.fuzzification(self._make_input(world))
+        #self.fuzzification(self._make_input(world))
         self.system.calculate(self._make_input(world), output)
-        return output['force']
-    
-    #def decide(self, world):
-    #    self.fuzzification(self._make_input(world))
+        print("force", output['force'])
+        print("myforce", Fuzzy.calculate(self._make_input(world)))
+        print(self._make_input(world))
+        #return output['force']
+        return Fuzzy.calculate(self._make_input(world))
+
 
 
 
