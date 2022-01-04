@@ -1,14 +1,21 @@
+import fuzzyRules
+
 # inputs
 class Inputs:
-    def __init__(self, cp, cv, pa, pv):
-        self.CP = self.CP(cp)
-        self.CV = self.CV(cv)
-        self.PA = self.PA(pa)
-        self.PV = self.PV(pv)
+    def __init__(self, input):
+        self.CP = self.CP(input['cp'])
+        self.CV = self.CV(input['cv'])
+        self.PA = self.PA(input['pa'])
+        self.PV = self.PV(input['pv'])
 
     class CP:
         def __init__(self, value):
             self.value = value
+            self.cp_left_far = self.cp_left_far()
+            self.cp_left_near = self.cp_left_near()
+            self.cp_stop = self.cp_stop()
+            self.cp_right_near = self.cp_right_near()
+            self.cp_right_far = self.cp_right_far()
 
         def cp_left_far(self):
             value = self.value
@@ -53,6 +60,11 @@ class Inputs:
     class CV:
         def __init__(self, value):
             self.value = value
+            self.cv_left_fast = self.cv_left_fast()
+            self.cv_left_slow = self.cv_left_slow()
+            self.cv_stop = self.cv_stop()
+            self.cv_right_slow = self.cv_right_slow()
+            self.cv_right_fast = self.cv_right_fast()
 
         def cv_left_fast(self):
             value = self.value
@@ -97,6 +109,16 @@ class Inputs:
     class PA:
         def __init__(self, value):
             self.value = value
+            self.pa_up_more_right = self.pa_up_more_right()
+            self.pa_up_right = self.pa_up_right()
+            self.pa_up = self.pa_up()
+            self.pa_up_left = self.pa_up_left()
+            self.pa_up_more_left = self.pa_up_more_left()
+            self.pa_down_more_left = self.pa_down_more_left()
+            self.pa_down_left = self.pa_down_left()
+            self.pa_down = self.pa_down()
+            self.pa_down_right = self.pa_down_right()
+            self.pa_down_more_right = self.pa_down_more_right()
         
         def pa_up_more_right(self):
             value = self.value
@@ -190,6 +212,11 @@ class Inputs:
     class PV:
         def __init__(self, value):
             self.value = value
+            self.pv_cw_fast = self.pv_cw_fast()
+            self.pv_cw_slow = self.pv_cw_slow()
+            self.pv_stop = self.pv_stop()
+            self.pv_ccw_slow = self.pv_ccw_slow()
+            self.pv_ccw_fast = self.pv_ccw_fast()
 
         def pv_cw_fast(self):
             value = self.value
@@ -237,65 +264,69 @@ class Inputs:
                 return 0
 
 # output
-Output_Lines = {
-    "left_fast" : {
-        "line1" : {
-            "range" : (-100, -80),
-            "a" : 0.05,
-            "b" : 5
-        },
-        "line2" : {
-            "range" : (-80, -60),
-            "a" : -0.05,
-            "b" : -3
-        }
-    },
-    "left_slow" : {
-        "line1" : {
-            "range" : (-80, -60),
-            "a" : 0.05,
-            "b" : 4
-        },
-        "line2" : {
-            "range" : (-60, 0),
-            "a" : 0.01666,
-            "b" : 0
-        }
-    },
-    "stop" : {
-        "line1" : {
-            "range" : (-60, 0),
-            "a" : 0.01666,
-            "b" : 1
-        },
-        "line2" : {
-            "range" : (0, 60),
-            "a" : -0.01666,
-            "b" : 1
-        }
-    },
-    "right_slow" : {
-        "line1" : {
-            "range" : (0, 60),
-            "a" : 0.01666,
-            "b" : 0
-        },
-        "line2" : {
-            "range" : (60, 80),
-            "a" : -0.05,
-            "b" : 4
-        }
-    },
-    "right_fast" : {
-        "line1" : {
-            "range" : (60, 80),
-            "a" : 0.05,
-            "b" : -3
-        },
-        "line2" : {
-            "range" : (80, 100),
-            "a" : -0.05,
-            "b" : 5
-        }
-    }
-}
+class Force:
+    def __init__(self, inf) :
+        self.inf = inf
+
+    def force_left_fast(self, value) :
+        alpha = self.inf.left_fast_rules
+        #print("left_fast  :  ", alpha)
+        if alpha == 0 :
+            return 0
+        if -100 < value <= -80 :
+            return min(alpha, ((0.05 * value) + 5))
+        elif -80 < value < -60 :
+            return min(alpha, (((-0.05) * value) - 3))
+        else :
+            return 0
+
+    def force_left_slow(self, value) :
+        alpha = self.inf.left_slow_rules
+        #print("left_slow  :  " , alpha)
+        if alpha == 0 :
+            return 0
+        if -80 < value <= -60 :
+            return min(alpha, ((0.05 * value) + 4))
+        elif -60 < value < 0 :
+            return min(alpha, ((-0.01666) * value))
+        else :
+            return 0
+
+    def force_stop(self, value) :
+        alpha = self.inf.stop_rules
+        #print("stop  :  " , alpha)
+        if alpha == 0 :
+            return 0
+        if -60 < value <= 0 :
+            return min(alpha, ((0.01666 * value) + 1))
+        elif 0 < value < 60 :
+            return min(alpha, (((-0.01666) * value) + 1))
+        else :
+            return 0
+
+    def force_right_slow(self, value) :
+        alpha = self.inf.right_slow_rules
+        #print("right_slow  :  " , alpha)
+        if alpha == 0 :
+            return 0
+        if 0 < value <= 60 :
+            return min(alpha, (0.01666 * value))
+        elif 60 < value < 80 :
+            return min(alpha, (((-0.05) * value) + 4))
+        else :
+            return 0
+
+    def force_right_fast(self, value) :
+        alpha = self.inf.right_fast_rules
+        #print("right_fast  :  " , alpha)
+        if alpha == 0 :
+            return 0
+        if 60 < value <= 80 :
+            return min(alpha, ((0.05 * value) - 3))
+        elif 80 < value < 100 :
+            return min(alpha, (((-0.05) * value) + 5))
+        else :
+            return 0
+
+    def get_membership(self, value) :
+        return max(self.force_left_fast(value), self.force_left_slow(value), self.force_stop(value), self.force_right_slow(value), self.force_right_fast(value))
